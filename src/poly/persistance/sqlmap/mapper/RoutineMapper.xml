@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="poly.persistance.mapper.IRoutineMapper">
+
+	<!-- 루틴저장(루틴정보 등록하기) -->
+	<insert id="insertRoutineInfo" parameterType="RoutineDTO">
+		INSERT INTO ROUTINE_INFO
+			(
+			SEQ,
+			TIME,
+			CONTENT,
+			USER_NO
+			)
+			
+		VALUES
+			(
+			(SELECT IFNULL(MAX(A.SEQ),0)+1 FROM ROUTINE_INFO A),
+			#{time},
+			#{content},
+			#{user_no}
+			
+			)
+			
+	
+	</insert>
+	
+	<!-- 루틴 가져오기 -->
+	<select id="getMyRoutine" parameterType="RoutineDTO" resultType="RoutineDTO">
+	SELECT *
+	FROM ROUTINE_INFO
+	WHERE USER_NO = #{user_no}
+	
+	
+	</select>
+	
+	<!-- 루틴 상세페이지 불러오기 -->
+	<select id="getRoutineDetail" resultType="RoutineDTO">
+		SELECT *
+		FROM ROUTINE_INFO
+		WHERE 
+		SEQ = #{seq}
+	</select>
+	
+	<!-- 루틴 수정 -->
+	<update id="updateRoutine" parameterType="RoutineDTO">
+		UPDATE ROUTINE_INFO
+		SET
+			TIME = #{time},
+			CONTENT = #{content}
+		WHERE SEQ = #{seq}
+	</update>
+	
+	
+	<!-- 루틴 삭제 -->
+	<delete id="deleteRoutine" parameterType="RoutineDTO">
+		DELETE 
+			FROM ROUTINE_INFO
+		WHERE SEQ = #{seq}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
